@@ -34,7 +34,6 @@ export default defineConfig({
     trace: 'on',
     screenshot: 'on',
     headless: process.env.CI ? true : false,
-    debug: true,
   },
 
   /* Configure projects for major browsers */
