@@ -1,18 +1,24 @@
 {
-    "name": "swm-system",
-    "version": "1.0.0",
-    "description": "SWM System with SQLite Backend",
-    "main": "server.js",
-    "scripts": {
-        "start": "node server.js",
-        "setup-db": "node setup_db.js",
-        "seed": "node seed_jobs.js"
-    },
-    "dependencies": {
-        "body-parser": "^1.20.2",
-        "cors": "^2.8.5",
-        "express": "^4.19.2",
-        "jsonwebtoken": "^9.0.3",
-        "sqlite3": "^5.1.7"
-    }
+  "name": "swm-automation-project",
+  "version": "1.0.0",
+  "description": "SWM System with SQLite Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "setup-db": "node setup_db.js",
+    "seed": "node seed_jobs.js"
+  },
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@types/node": "^25.2.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.3",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
 }
