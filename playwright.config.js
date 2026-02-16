@@ -8,7 +8,7 @@ import { defineConfig, devices } from '@playwright/test';
 // import dotenv from 'dotenv';
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
-require('dotenv').config({ path: require('path').resolve(__dirname, '.env') });
+require('dotenv').config();
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -34,6 +34,7 @@ export default defineConfig({
     trace: 'on',
     screenshot: 'on',
     headless: process.env.CI ? true : false,
+    debug: true,
   },
 
   /* Configure projects for major browsers */
