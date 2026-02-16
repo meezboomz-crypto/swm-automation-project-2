@@ -28,9 +28,6 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     baseURL: 'http://localhost:3000',
-    // extraHTTPHeaders: {
-    //   'Accept': 'application/json'
-    // },
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',
@@ -44,23 +41,6 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
-    // {
-    //   name: 'setup', testMatch: /.*\.setup\.ts/
-    // },
-
-    // {
-    //   name: 'admin-tests',
-    //   use: { storageState: '.auth/admin.json' },
-    //   dependencies: ['setup'],
-    //   testIgnore: /.*user\.spec\.ts/,
-    // },
-
-    // {
-    //   name: 'general-tests',
-    //   use: { storageState: '.auth/genetal.json' },
-    //   dependencies: ['setup'],
-    // },
 
     // {
     //   name: 'firefox',

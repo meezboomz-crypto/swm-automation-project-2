@@ -1,4 +1,4 @@
-import { test, expect, request } from '../../requests/base'
+import { test, expect } from '../../requests/base'
 import { getUsernameAndPassword } from '../../utils'
 
 test.describe('Login on API tests', () => {
@@ -26,7 +26,7 @@ test.describe('Login on API tests', () => {
         };
     });
 
-    test.describe.only('Negatives', () => {
+    test.describe('Negatives', () => {
         test('Login with an existing username but invalid password.', async ({ loginReq }) => {
             const { response, body } = await loginReq.login(admins[0].username, 'invalid password');
 
