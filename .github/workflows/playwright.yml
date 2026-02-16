@@ -23,7 +23,7 @@ jobs:
         npm run setup-db
         npm run seed
       env:
-        AMIN_ACCOUNTS: ${{ secrets.ADMIN_ACCOUNTS }}
+        ADMIN_ACCOUNTS: ${{ secrets.ADMIN_ACCOUNTS }}
         USER_ACCOUNTS: ${{ secrets.USER_ACCOUNTS }}
 
     - name: Install Playwright Browsers
@@ -31,8 +31,8 @@ jobs:
 
     - name: Run Playwright tests
       env:
-        ADMIN_ACCOUNTS: ${{ secrets.ADMIN_ACCOUNT }}
-        USER_ACCOUNTS: ${{ secrets.USER_ACCOUNT }}
+        ADMIN_ACCOUNTS: ${{ secrets.ADMIN_ACCOUNTS }} 
+        USER_ACCOUNTS: ${{ secrets.USER_ACCOUNTS }}
       run: npx playwright test
 
     - name: Upload Report
