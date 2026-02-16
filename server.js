@@ -1,7 +1,6 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs'); // Added for .env parsing
 const jwt = require('jsonwebtoken');
@@ -47,7 +46,7 @@ const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '12h';
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(express.static(path.join(__dirname, '.'))); // Serve static files from root
 
 // Database Connection
