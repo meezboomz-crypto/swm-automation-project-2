@@ -1,0 +1,15 @@
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+/src/testData.json
+
+# SWM_System
+node_modules/
+.env
+*.log
+swm_database.db
