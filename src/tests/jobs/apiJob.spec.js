@@ -70,7 +70,7 @@ test.describe('Job API tests', () => {
         });
     });
 
-    test.describe.only('General User', () => {
+    test.describe('General User', () => {
         let token;
         test.beforeEach(async ({ loginReq }) => {
             const { response, body } = await loginReq.login(generals[0].username, generals[0].password);
