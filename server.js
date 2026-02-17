@@ -74,6 +74,14 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
+const requireAdmin = (req, res, next) => {
+    if (req.user && req.user.role === 'admin') {
+        next();
+    } else {
+        res.status(403).json({ error: 'Access denied. Admin role required.' });
+    }
+};
+
 // API Endpoints
 
 // Login
@@ -181,7 +189,7 @@ app.post('/api/jobs', authenticateToken, (req, res) => {
 });
 
 // Update Job
-app.put('/api/jobs/:id', authenticateToken, (req, res) => {
+app.put('/api/jobs/:id', authenticateToken, requireAdmin, (req, res) => {
     const jobId = req.params.id;
     const { customerName, jobType, subtotal, vat, estimatedPrice, status, notes, items } = req.body;
 
@@ -224,7 +232,7 @@ app.put('/api/jobs/:id', authenticateToken, (req, res) => {
 });
 
 // Update Status (Helper for Kanban drag/drop if needed, or just use general update)
-app.patch('/api/jobs/:id/status', authenticateToken, (req, res) => {
+app.patch('/api/jobs/:id/status', authenticateToken, requireAdmin, (req, res) => {
     const { status } = req.body;
     db.run(`UPDATE jobs SET status = ? WHERE id = ?`, [status, req.params.id], function (err) {
         if (err) {
@@ -235,7 +243,7 @@ app.patch('/api/jobs/:id/status', authenticateToken, (req, res) => {
 });
 
 // Soft Delete Job (Mark as Cancelled)
-app.delete('/api/jobs/:id', authenticateToken, (req, res) => {
+app.delete('/api/jobs/:id', authenticateToken, requireAdmin, (req, res) => {
     const id = req.params.id;
     // Instead of DELETE, we update status to 'Cancelled'
     db.run(`UPDATE jobs SET status = 'Cancelled' WHERE id = ?`, [id], function (err) {
