@@ -21,21 +21,22 @@ export const createJobPage = (page) => ({
     async fillJobForm(jobData) {
         await this.customerNameInput.fill(jobData.customerName);
         await this.jobTypeSelect.selectOption(jobData.jobType);
-        const count = await this.descriptionInput.count();
-        for (const [index, item] of jobData.items.entries()) {
-            // update description input if there are more items to update
-            if (count > 1 && jobData.items.length - 1 >= index + 1) {
-                await this.addDescriptionBtn.click();
+
+        const isUpdate = await this.descriptionInput.count() > 1;
+        if (isUpdate) {
+            const existedCount = await this.removeDescriptionBtn.count();
+            for (let i = 0; i < existedCount - 1; i++) {
+                await this.removeDescriptionBtn.last().click();
             };
-            // insert new description input if there are more items to add
-            if (count === 1 && jobData.items.length >= index + 1) {
+        };
+        for (const [index, item] of jobData.items.entries()) {
+            if (index > jobData.items.length - 1) {
                 await this.addDescriptionBtn.click();
             };
             await this.descriptionInput.nth(index).fill(item.description);
             await this.priceInput.nth(index).fill(item.price.toString());
         };
-        await this.removeDescriptionBtn.last().click();
-        await this.notesInput.fill(jobData.notes);
+        await this.notesInput.fill(jobData.notes || '');
     },
 
     async submitJob() {
