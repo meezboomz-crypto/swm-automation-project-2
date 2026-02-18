@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test';
 import { createLoginPage } from './login.page';
 import { createDashboardPage } from './dashboard.page';
+import { createJobPage } from './job.page';
 
 export const test = base.extend({
     loginPage: async ({ page }, use) => {
@@ -10,6 +11,10 @@ export const test = base.extend({
     dashboardPage: async ({ page }, use) => {
         const dashboardPageInstance = createDashboardPage(page);
         await use(dashboardPageInstance);
+    },
+    jobPage: async ({ page }, use) => {
+        const jobPageInstance = createJobPage(page);
+        await use(jobPageInstance);
     },
 });
 

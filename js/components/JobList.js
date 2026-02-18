@@ -416,7 +416,9 @@ export default {
                             </div>
                             <div class="flex items-center gap-2">
                                 <button 
-                                    @click="downloadPDF" 
+                                    @click="downloadPDF"
+                                    class="inline-flex justify-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 border border-transparent px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-all"
+                                >
                                     <i class="ph ph-printer text-lg"></i>
                                     พิมพ์ / บันทึก PDF
                                 </button>
