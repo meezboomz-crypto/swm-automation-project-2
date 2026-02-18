@@ -49,7 +49,7 @@ test.describe('Login on API tests', () => {
         });
 
         test('Login with invalid data type.', async ({ loginReq }) => {
-            const { response } = await loginReq.login(['admin1'], { password: '1234' });
+            const { response } = await loginReq.login([`${admins[0].username}`], { password: `${admins[0].password}` });
 
             expect(response.status()).toBe(401);//ควรจะเป็น 400 Bad Request เพราะข้อมูลไม่ถูกต้อง แต่ถ้า API ยังตอบ 401 ก็ถือว่าโอเคในแง่ของการป้องกันการโจมตีแบบนี้
         });
@@ -75,7 +75,7 @@ test.describe('Login on API tests', () => {
 
         test('Login with wrong Content-Type header', async ({ request }) => {
             const response = await request.post('/api/login', {
-                data: 'username=admin1&password=1234',
+                data: `username=${admins[0].username}&password=${admins[0].password}`,
                 headers: { 'Content-Type': 'text/plain' }
             });
 

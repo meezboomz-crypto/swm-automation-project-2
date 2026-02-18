@@ -1,7 +1,7 @@
 import { test, expect } from '../../pages/base';
 import { getUsernameAndPassword } from '../../utils';
 
-test.describe('UI Job Creation', () => {
+test.describe.serial('UI Job Creation', () => {
     const { admins, generals } = getUsernameAndPassword();
 
     test.describe('Admin', () => {
@@ -16,7 +16,6 @@ test.describe('UI Job Creation', () => {
                 id: Date.now().toString(), // Use timestamp as a unique ID for testing
                 customerName: 'Test Job Created',
                 jobType: 'General',
-                status: 'Pending',
                 notes: 'This is an created test job.',
                 items: [
                     { description: 'Item 1', price: 200 },
@@ -37,7 +36,6 @@ test.describe('UI Job Creation', () => {
                 id: Date.now().toString(), // Use timestamp as a unique ID for testing
                 customerName: 'Test Job Updated',
                 jobType: 'General',
-                status: 'In Progress',
                 notes: 'This is an updated test job.',
                 items: [
                     { description: 'Item 1', price: 400 },
@@ -54,12 +52,18 @@ test.describe('UI Job Creation', () => {
             await jobPage.submitJob();
         });
 
+        test('should update status of a job', async ({ jobPage }) => {
+            await jobPage.jobListBtn.click();
+            await jobPage.updateStatusBtn.first().click();
+
+            await expect(jobPage.updateStatusBtn.first()).toHaveClass(/ring-1/);
+        });
+
         test.describe('Negative cases', () => {
             test('should show validation error when creating a job with empty customer name', async ({ jobPage }) => {
                 const jobData = {
                     customerName: '',
                     jobType: 'General',
-                    status: 'Pending',
                     notes: 'This is an invalid test job.',
                     items: [
                         { description: 'Item 1', price: 200 },
@@ -79,7 +83,6 @@ test.describe('UI Job Creation', () => {
                 const jobData = {
                     customerName: 'Test Job Invalid',
                     jobType: 'General',
-                    status: 'Pending',
                     notes: 'This is an invalid test job.',
                     items: [
                         { description: '', price: 200 },
@@ -99,7 +102,6 @@ test.describe('UI Job Creation', () => {
                 const jobData = {
                     customerName: 'Test Job Invalid',
                     jobType: 'General',
-                    status: 'Pending',
                     notes: 'This is an invalid test job.',
                     items: [
                         { description: 'Item 1', price: -100 },
@@ -130,7 +132,6 @@ test.describe('UI Job Creation', () => {
                 id: Date.now().toString(), // Use timestamp as a unique ID for testing
                 customerName: 'Test Job Created',
                 jobType: 'General',
-                status: 'Pending',
                 notes: 'This is an created test job.',
                 items: [
                     { description: 'Item 1', price: 200 },

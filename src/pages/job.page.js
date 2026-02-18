@@ -16,6 +16,7 @@ export const createJobPage = (page) => ({
     cancelBtn: page.getByRole('button', { name: /ยกเลิก/ }),
 
     jobListBtn: page.getByRole('button', { name: /รายการงานทั้งหมด/ }),
+    updateStatusBtn: page.locator('button[title="กำลังทำ"]'),
     updateJobBtn: page.locator('button[title="แก้ไข"]'),
 
     async fillJobForm(jobData) {
@@ -30,7 +31,7 @@ export const createJobPage = (page) => ({
             };
         };
         for (const [index, item] of jobData.items.entries()) {
-            if (index > jobData.items.length - 1) {
+            if (jobData.items.length > index + 1) {
                 await this.addDescriptionBtn.click();
             };
             await this.descriptionInput.nth(index).fill(item.description);
