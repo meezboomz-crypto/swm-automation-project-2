@@ -1,7 +1,7 @@
 import { test, expect } from '../../requests/base';
 import { getUsernameAndPassword } from '../../utils';
 
-test.describe('Job API tests', () => {
+test.describe.serial('Job API tests', () => {
     const { admins, generals } = getUsernameAndPassword();
 
     let jobId;
@@ -62,7 +62,15 @@ test.describe('Job API tests', () => {
             expect(body).toHaveProperty('message', 'Job updated');
         });
 
-        test('Soft delete a job', async ({ jobReq }) => {
+        test('Update job status', async ({ jobReq }) => {
+            const newStatus = 'In Progress';
+            const { response, body } = await jobReq.updateJobStatus(jobId, newStatus, token);
+
+            expect(response.ok()).toBeTruthy();
+            expect(body).toHaveProperty('message', 'Status updated');
+        });
+
+        test('Delete a job', async ({ jobReq }) => {
             const { response, body } = await jobReq.deleteJob(jobId, token);
 
             expect(response.ok()).toBeTruthy();
@@ -137,6 +145,14 @@ test.describe('Job API tests', () => {
                     createdAt: new Date().toISOString(),
                 };
                 const { response, body } = await jobReq.updateJob(jobId, jobData, token);
+
+                expect(response.status()).toBe(403);
+                expect(body).toHaveProperty('error');
+            });
+
+            test('Update job status with non-authorized user', async ({ jobReq }) => {
+                const newStatus = 'In Progress';
+                const { response, body } = await jobReq.updateJobStatus(jobId, newStatus, token);
 
                 expect(response.status()).toBe(403);
                 expect(body).toHaveProperty('error');
