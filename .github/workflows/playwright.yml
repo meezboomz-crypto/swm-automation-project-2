@@ -4,6 +4,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   setup:
@@ -33,7 +34,7 @@ jobs:
       env:
         ADMIN_ACCOUNTS: ${{ secrets.ADMIN_ACCOUNTS }} 
         USER_ACCOUNTS: ${{ secrets.USER_ACCOUNTS }}
-      run: npx playwright test jobs/uiJob.spec.js
+      run: npx playwright test
 
     - name: Upload Report
       uses: actions/upload-artifact@v4
