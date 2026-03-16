@@ -15,9 +15,13 @@ test.describe.serial('Job API tests', () => {
             expect(response.ok()).toBeTruthy();
 
             token = body.accessToken;
+
+            expect(token).toBeDefined();
         });
 
         test('Create a job with valid data', async ({ jobReq }) => {
+            const startTime = Date.now();
+
             // Then, create a job using the token
             const jobData = {
                 id: Date.now().toString(), // Use timestamp as a unique ID for testing
@@ -31,10 +35,15 @@ test.describe.serial('Job API tests', () => {
                 ],
                 createdAt: new Date().toISOString(),
             };
+
             const { response, body } = await jobReq.createJob(jobData, token);
 
             expect(response.ok()).toBeTruthy();
-            expect(body).toHaveProperty('id');
+
+            const duration = Date.now() - startTime;
+
+            expect(duration).toBeLessThan(500);
+            expect(body).toHaveProperty('id')
         });
 
         test.beforeEach(async ({ jobReq }) => {
@@ -45,6 +54,8 @@ test.describe.serial('Job API tests', () => {
         });
 
         test('Update a job with valid data', async ({ jobReq }) => {
+            const startTime = Date.now();
+
             const jobData = {
                 customerName: 'Test Job Updated',
                 jobType: 'General',
@@ -56,24 +67,41 @@ test.describe.serial('Job API tests', () => {
                 ],
                 createdAt: new Date().toISOString(),
             };
+
             const { response, body } = await jobReq.updateJob(jobId, jobData, token);
 
             expect(response.ok()).toBeTruthy();
+
+            const duration = Date.now() - startTime;
+
+            expect(duration).toBeLessThan(500);
             expect(body).toHaveProperty('message', 'Job updated');
         });
 
         test('Update job status', async ({ jobReq }) => {
+            const startTime = Date.now();
+
             const newStatus = 'In Progress';
             const { response, body } = await jobReq.updateJobStatus(jobId, newStatus, token);
 
             expect(response.ok()).toBeTruthy();
+
+            const duration = Date.now() - startTime;
+
+            expect(duration).toBeLessThan(500);
             expect(body).toHaveProperty('message', 'Status updated');
         });
 
         test('Delete a job', async ({ jobReq }) => {
+            const startTime = Date.now();
+
             const { response, body } = await jobReq.deleteJob(jobId, token);
 
             expect(response.ok()).toBeTruthy();
+
+            const duration = Date.now() - startTime;
+
+            expect(duration).toBeLessThan(500);
             expect(body).toHaveProperty('message', 'Job cancelled (soft deleted)');
         });
     });
@@ -88,6 +116,8 @@ test.describe.serial('Job API tests', () => {
         });
 
         test('Create a job with valid data', async ({ jobReq }) => {
+            const startTime = Date.now();
+
             const jobData = {
                 id: Date.now().toString(), // Use timestamp as a unique ID for testing
                 customerName: 'Test Job',
@@ -103,11 +133,17 @@ test.describe.serial('Job API tests', () => {
             const { response, body } = await jobReq.createJob(jobData, token);
 
             expect(response.ok()).toBeTruthy();
+
+            const duration = Date.now() - startTime;
+
+            expect(duration).toBeLessThan(500);
             expect(body).toHaveProperty('id');
         });
 
         test.describe('Negative Tests', () => {
             test('Create a job with missing fields', async ({ jobReq }) => {
+                const startTime = Date.now();
+
                 const jobData = {
                     id: Date.now().toString(), // Use timestamp as a unique ID for testing
                     jobType: 'General',
@@ -122,6 +158,10 @@ test.describe.serial('Job API tests', () => {
                 const { response, body } = await jobReq.createJob(jobData, token);
 
                 expect(response.status()).toBe(400);
+
+                const duration = Date.now() - startTime;
+
+                expect(duration).toBeLessThan(500);
                 expect(body).toHaveProperty('error');
             });
 
@@ -132,6 +172,8 @@ test.describe.serial('Job API tests', () => {
             });
 
             test('Update a job with non-authorized user', async ({ jobReq }) => {
+                const startTime = Date.now();
+
                 const jobData = {
                     id: Date.now().toString(), // Use timestamp as a unique ID for testing
                     customerName: 'Test Job Updated',
@@ -147,21 +189,37 @@ test.describe.serial('Job API tests', () => {
                 const { response, body } = await jobReq.updateJob(jobId, jobData, token);
 
                 expect(response.status()).toBe(403);
+
+                const duration = Date.now() - startTime;
+
+                expect(duration).toBeLessThan(500);
                 expect(body).toHaveProperty('error');
             });
 
             test('Update job status with non-authorized user', async ({ jobReq }) => {
+                const startTime = Date.now();
+
                 const newStatus = 'In Progress';
                 const { response, body } = await jobReq.updateJobStatus(jobId, newStatus, token);
 
                 expect(response.status()).toBe(403);
+
+                const duration = Date.now() - startTime;
+
+                expect(duration).toBeLessThan(500);
                 expect(body).toHaveProperty('error');
             });
 
             test('Delete a job with non-authorized user', async ({ jobReq }) => {
+                const startTime = Date.now();
+
                 const { response, body } = await jobReq.deleteJob(jobId, token);
 
                 expect(response.status()).toBe(403);
+
+                const duration = Date.now() - startTime;
+
+                expect(duration).toBeLessThan(500);
                 expect(body).toHaveProperty('error');
             });
         });
