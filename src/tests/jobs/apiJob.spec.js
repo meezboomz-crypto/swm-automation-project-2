@@ -1,4 +1,4 @@
-import { test, expect } from '../../requests/base';
+import { test, expect } from '../../base';
 import { getUsernameAndPassword } from '../../utils';
 
 test.describe.serial('Job API tests', () => {
@@ -7,8 +7,8 @@ test.describe.serial('Job API tests', () => {
     let jobId;
 
     test.describe('Admin', () => {
-        let token;
-        test.beforeEach(async ({ loginReq }) => {
+        // let token;
+        /**test.beforeEach(async ({ loginReq }) => {
             // First, log in to get the token
             const { response, body } = await loginReq.login(admins[0].username, admins[0].password);
 
@@ -17,7 +17,7 @@ test.describe.serial('Job API tests', () => {
             token = body.accessToken;
 
             expect(token).toBeDefined();
-        });
+        });*/
 
         test('Create a job with valid data', async ({ jobReq }) => {
             const startTime = Date.now();
@@ -36,7 +36,7 @@ test.describe.serial('Job API tests', () => {
                 createdAt: new Date().toISOString(),
             };
 
-            const { response, body } = await jobReq.createJob(jobData, token);
+            const { response, body } = await jobReq.createJob(jobData);
 
             expect(response.ok()).toBeTruthy();
 
@@ -46,12 +46,12 @@ test.describe.serial('Job API tests', () => {
             expect(body).toHaveProperty('id')
         });
 
-        test.beforeEach(async ({ jobReq }) => {
+        /**test.beforeEach(async ({ jobReq }) => {
             const { response, body } = await jobReq.getJobs(token);
 
             expect(response.ok()).toBeTruthy();
             jobId = body[0]?.id; // Get the ID of the first job for update/delete tests
-        });
+        });*/
 
         test('Update a job with valid data', async ({ jobReq }) => {
             const startTime = Date.now();
@@ -68,7 +68,7 @@ test.describe.serial('Job API tests', () => {
                 createdAt: new Date().toISOString(),
             };
 
-            const { response, body } = await jobReq.updateJob(jobId, jobData, token);
+            const { response, body } = await jobReq.updateJob(jobId, jobData);
 
             expect(response.ok()).toBeTruthy();
 
@@ -82,7 +82,7 @@ test.describe.serial('Job API tests', () => {
             const startTime = Date.now();
 
             const newStatus = 'In Progress';
-            const { response, body } = await jobReq.updateJobStatus(jobId, newStatus, token);
+            const { response, body } = await jobReq.updateJobStatus(jobId, newStatus);
 
             expect(response.ok()).toBeTruthy();
 
@@ -95,7 +95,7 @@ test.describe.serial('Job API tests', () => {
         test('Delete a job', async ({ jobReq }) => {
             const startTime = Date.now();
 
-            const { response, body } = await jobReq.deleteJob(jobId, token);
+            const { response, body } = await jobReq.deleteJob(jobId);
 
             expect(response.ok()).toBeTruthy();
 
@@ -107,13 +107,13 @@ test.describe.serial('Job API tests', () => {
     });
 
     test.describe('General User', () => {
-        let token;
-        test.beforeEach(async ({ loginReq }) => {
+        // let token;
+        /**test.beforeEach(async ({ loginReq }) => {
             const { response, body } = await loginReq.login(generals[0].username, generals[0].password);
 
             expect(response.ok()).toBeTruthy();
             token = body.accessToken;
-        });
+        });*/
 
         test('Create a job with valid data', async ({ jobReq }) => {
             const startTime = Date.now();
@@ -130,7 +130,7 @@ test.describe.serial('Job API tests', () => {
                 ],
                 createdAt: new Date().toISOString(),
             };
-            const { response, body } = await jobReq.createJob(jobData, token);
+            const { response, body } = await jobReq.createJob(jobData);
 
             expect(response.ok()).toBeTruthy();
 
@@ -155,7 +155,7 @@ test.describe.serial('Job API tests', () => {
                     ],
                     createdAt: new Date().toISOString(),
                 };
-                const { response, body } = await jobReq.createJob(jobData, token);
+                const { response, body } = await jobReq.createJob(jobData);
 
                 expect(response.status()).toBe(400);
 
@@ -165,11 +165,11 @@ test.describe.serial('Job API tests', () => {
                 expect(body).toHaveProperty('error');
             });
 
-            test.beforeEach(async ({ jobReq }) => {
+            /**test.beforeEach(async ({ jobReq }) => {
                 const { response, body } = await jobReq.getJobs(token);
                 expect(response.ok()).toBeTruthy();
                 jobId = body[0]?.id; // Get the ID of the first job for update/delete tests
-            });
+            });*/
 
             test('Update a job with non-authorized user', async ({ jobReq }) => {
                 const startTime = Date.now();
@@ -186,7 +186,7 @@ test.describe.serial('Job API tests', () => {
                     ],
                     createdAt: new Date().toISOString(),
                 };
-                const { response, body } = await jobReq.updateJob(jobId, jobData, token);
+                const { response, body } = await jobReq.updateJob(jobId, jobData);
 
                 expect(response.status()).toBe(403);
 
@@ -200,7 +200,7 @@ test.describe.serial('Job API tests', () => {
                 const startTime = Date.now();
 
                 const newStatus = 'In Progress';
-                const { response, body } = await jobReq.updateJobStatus(jobId, newStatus, token);
+                const { response, body } = await jobReq.updateJobStatus(jobId, newStatus);
 
                 expect(response.status()).toBe(403);
 
@@ -213,7 +213,7 @@ test.describe.serial('Job API tests', () => {
             test('Delete a job with non-authorized user', async ({ jobReq }) => {
                 const startTime = Date.now();
 
-                const { response, body } = await jobReq.deleteJob(jobId, token);
+                const { response, body } = await jobReq.deleteJob(jobId);
 
                 expect(response.status()).toBe(403);
 

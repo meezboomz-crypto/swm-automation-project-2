@@ -1,4 +1,4 @@
-import { test, expect } from '../../pages/base'
+import { test, expect } from '../../base'
 import { getUsernameAndPassword } from '../../utils'
 
 test.describe('Login on UI tests', () => {
