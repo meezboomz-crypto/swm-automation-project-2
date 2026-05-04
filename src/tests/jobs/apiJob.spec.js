@@ -55,7 +55,7 @@ test.describe.serial('Job API tests', () => {
                 createdAt: new Date().toISOString(),
             };
 
-            const { response, body } = await jobReq.updateJob(jobId, jobData);
+            const { response, body } = await jobReq.updateJob(jobId, jobData, true);
 
             expect(response.ok()).toBeTruthy();
 
@@ -69,7 +69,7 @@ test.describe.serial('Job API tests', () => {
             const startTime = Date.now();
 
             const newStatus = 'In Progress';
-            const { response, body } = await jobReq.updateJobStatus(jobId, newStatus);
+            const { response, body } = await jobReq.updateJobStatus(jobId, newStatus, true);
 
             expect(response.ok()).toBeTruthy();
 
@@ -165,7 +165,7 @@ test.describe.serial('Job API tests', () => {
                     ],
                     createdAt: new Date().toISOString(),
                 };
-                const { response, body } = await jobReq.updateJob(jobId, jobData);
+                const { response, body } = await jobReq.updateJob(jobId, jobData, false);
 
                 expect(response.status()).toBe(403);
 
@@ -179,7 +179,7 @@ test.describe.serial('Job API tests', () => {
                 const startTime = Date.now();
 
                 const newStatus = 'In Progress';
-                const { response, body } = await jobReq.updateJobStatus(jobId, newStatus);
+                const { response, body } = await jobReq.updateJobStatus(jobId, newStatus, false);
 
                 expect(response.status()).toBe(403);
 
@@ -192,7 +192,7 @@ test.describe.serial('Job API tests', () => {
             test('Delete a job with non-authorized user', async ({ jobReq }) => {
                 const startTime = Date.now();
 
-                const { response, body } = await jobReq.deleteJob(jobId);
+                const { response, body } = await jobReq.deleteJob(jobId, false);
 
                 expect(response.status()).toBe(403);
 
