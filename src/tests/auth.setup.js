@@ -4,10 +4,12 @@ import { getUsernameAndPassword } from '../utils';
 const authFile = 'playwrtight/.auth/user.json';
 
 setup('authenticate', async ({ request }) => {
+    const { admins, generals } = getUsernameAndPassword();
+
     const response = await request.post('/api/login', {
         data: {
-            username: getUsernameAndPassword().username,
-            password: getUsernameAndPassword().password
+            username: admins[0].username,
+            password: admins[0].password,
         }
     });
 

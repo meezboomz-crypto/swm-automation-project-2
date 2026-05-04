@@ -7,22 +7,9 @@ test.describe.serial('Job API tests', () => {
     let jobId;
 
     test.describe('Admin', () => {
-        // let token;
-        /**test.beforeEach(async ({ loginReq }) => {
-            // First, log in to get the token
-            const { response, body } = await loginReq.login(admins[0].username, admins[0].password);
-
-            expect(response.ok()).toBeTruthy();
-
-            token = body.accessToken;
-
-            expect(token).toBeDefined();
-        });*/
-
         test('Create a job with valid data', async ({ jobReq }) => {
             const startTime = Date.now();
 
-            // Then, create a job using the token
             const jobData = {
                 id: Date.now().toString(), // Use timestamp as a unique ID for testing
                 customerName: 'Test Job',
@@ -46,12 +33,12 @@ test.describe.serial('Job API tests', () => {
             expect(body).toHaveProperty('id')
         });
 
-        /**test.beforeEach(async ({ jobReq }) => {
-            const { response, body } = await jobReq.getJobs(token);
+        test.beforeEach(async ({ jobReq }) => {
+            const { response, body } = await jobReq.getJobs();
 
             expect(response.ok()).toBeTruthy();
             jobId = body[0]?.id; // Get the ID of the first job for update/delete tests
-        });*/
+        });
 
         test('Update a job with valid data', async ({ jobReq }) => {
             const startTime = Date.now();
@@ -107,14 +94,6 @@ test.describe.serial('Job API tests', () => {
     });
 
     test.describe('General User', () => {
-        // let token;
-        /**test.beforeEach(async ({ loginReq }) => {
-            const { response, body } = await loginReq.login(generals[0].username, generals[0].password);
-
-            expect(response.ok()).toBeTruthy();
-            token = body.accessToken;
-        });*/
-
         test('Create a job with valid data', async ({ jobReq }) => {
             const startTime = Date.now();
 
@@ -165,11 +144,11 @@ test.describe.serial('Job API tests', () => {
                 expect(body).toHaveProperty('error');
             });
 
-            /**test.beforeEach(async ({ jobReq }) => {
-                const { response, body } = await jobReq.getJobs(token);
+            test.beforeEach(async ({ jobReq }) => {
+                const { response, body } = await jobReq.getJobs();
                 expect(response.ok()).toBeTruthy();
                 jobId = body[0]?.id; // Get the ID of the first job for update/delete tests
-            });*/
+            });
 
             test('Update a job with non-authorized user', async ({ jobReq }) => {
                 const startTime = Date.now();
